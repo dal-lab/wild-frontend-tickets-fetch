@@ -14,6 +14,7 @@ export async function fetchTickets(): Promise<{
   console.log("🌏 fetchTicket", data);
   return data;
 }
+
 export async function createTickets({
   title,
   description,
