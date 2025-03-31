@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "vite --port 8080",
-    "test": "vitest --watch --reporter=verbose"
+    "test": "vitest --watch --reporter=verbose",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,9 @@
     "vitest": "^3.0.8"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.71.1",
+    "@tanstack/react-query-devtools": "^5.71.1",
+    "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
