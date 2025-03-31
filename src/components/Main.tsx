@@ -1,14 +1,10 @@
-import TicketList from './TicketList';
-import TicketForm from './TicketForm';
-
-import useTickets from '../hooks/useTickets';
+import TicketForm from "./TicketForm";
+import TicketList from "./TicketList";
 
 export default function Main() {
-  const { tickets } = useTickets();
-
   return (
     <main>
-      <TicketList tickets={tickets} />
+      <TicketList />
       <TicketForm />
     </main>
   );

@@ -7,6 +7,6 @@ export interface Ticket {
   id: number;
   title: string;
   description: string;
-  status: 'open' | 'closed';
+  status: "open" | "closed";
   comments: Comment[];
 }
