@@ -9,7 +9,7 @@ import useCreateTicket from "../hooks/useCreateTicket";
 export default function TicketForm() {
   const createTicket = useCreateTicket();
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     const form = event.target as HTMLFormElement;

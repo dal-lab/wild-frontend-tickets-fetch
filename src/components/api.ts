@@ -7,8 +7,12 @@ const instance = axios.create({
   timeout: 1_000,
 });
 
-export async function fetchTickets(): Promise<{
+export interface TicketListDto {
   tickets: Ticket[];
+}
+
+export async function fetchTickets(): Promise<{
+  tickets: TicketListDto[];
 }> {
   const { data } = await instance.get("/tickets");
   console.log("🌏 fetchTicket", data);
