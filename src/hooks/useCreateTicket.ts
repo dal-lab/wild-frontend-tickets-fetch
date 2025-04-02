@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTickets, TicketListDto } from "../components/api";
+import { createTickets, TicketListDto } from "../api";
 import { TICKETS_QUERY_KEY } from "../constants";
 
 export default function useCreateTicket() {

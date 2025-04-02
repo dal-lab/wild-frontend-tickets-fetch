@@ -1,66 +1,107 @@
-import { beforeEach, describe, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
-import TicketItem from './TicketItem';
+import TicketItem from "./TicketItem";
 
-import { Ticket } from '../types';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import nock from "nock";
+import { API_BASE_URL } from "../api";
+import { Ticket } from "../types";
 
 const context = describe;
 
-describe('TicketItem', () => {
+describe("TicketItem", () => {
+  let requestTicketId = "";
   const ticket: Ticket = {
-    id: 1,
-    title: 'TITLE',
-    description: 'DESCRIPTION',
-    status: 'open',
-    comments: [
-      { id: 1, content: 'COMMENT' },
-    ],
+    id: "1",
+    title: "TITLE",
+    description: "DESCRIPTION",
+    status: "open",
+    comments: [{ id: "1", content: "COMMENT" }],
   };
 
   beforeEach(() => {
+    requestTicketId = "";
+
+    nock(API_BASE_URL)
+      .patch(`/tickets/${ticket.id}`)
+      .reply(200, (uri, body: any) => {
+        const parts = uri.split("/");
+        requestTicketId = parts[parts.length - 1];
+        return {
+          ...ticket,
+          status: body.status,
+        };
+      });
+
+    nock(API_BASE_URL)
+      .post(`/tickets/${ticket.id}/comments`)
+      .reply(200, (uri, body: any) => {
+        const parts = uri.split("/");
+        requestTicketId = parts[parts.length - 2];
+        return {
+          ...ticket,
+          comments: [
+            ...ticket.comments,
+            { id: `temp-comment-${Date.now()}`, content: body.content },
+          ],
+        };
+      });
+
     vi.resetAllMocks();
   });
 
   function renderTicketItem() {
+    const queryClient = new QueryClient();
     render(
-      <TicketItem ticket={ticket} />
+      <QueryClientProvider client={queryClient}>
+        <TicketItem ticket={ticket} />
+      </QueryClientProvider>
     );
   }
 
-  it('renders title and description', () => {
+  it("renders title and description", () => {
     renderTicketItem();
 
-    screen.getByText('TITLE');
-    screen.getByText('DESCRIPTION');
+    screen.getByText("TITLE");
+    screen.getByText("DESCRIPTION");
   });
 
-  it('renders status', () => {
+  it("renders status", () => {
     renderTicketItem();
 
     screen.getByText(/Open/);
   });
 
-  it('renders comments', () => {
+  it("renders comments", () => {
     renderTicketItem();
 
-    screen.getByText('COMMENT');
+    screen.getByText("COMMENT");
   });
 
-  context('when user clicks toggle button', () => {
-    it('calls API', () => {
+  context("when user clicks toggle button", () => {
+    it("calls API", async () => {
       renderTicketItem();
 
-      // TODO: Write test code here
+      fireEvent.click(screen.getByRole("button", { name: /Open/ }));
+
+      await waitFor(() => {
+        expect(requestTicketId).toBe(ticket.id);
+      });
     });
   });
 
-  context('when user submits comment', () => {
-    it('calls API', () => {
+  context("when user submits comment", () => {
+    it("calls API", async () => {
       renderTicketItem();
-
-      // TODO: Write test code here
+      fireEvent.change(screen.getByRole("textbox", { name: /Comment/ }), {
+        target: { value: "New Comment" },
+      });
+      fireEvent.click(screen.getByRole("button", { name: /Add Comment/ }));
+      await waitFor(() => {
+        expect(requestTicketId).toBe(ticket.id);
+      });
     });
   });
 });
