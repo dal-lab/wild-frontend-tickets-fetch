@@ -8,6 +8,7 @@ export default function useCreateTicket() {
     mutationFn: createTickets,
     onMutate: async ({ title, description }) => {
       await queryClient.cancelQueries({ queryKey: [TICKETS_QUERY_KEY] });
+      const previousTickets = queryClient.getQueryData([TICKETS_QUERY_KEY]);
       queryClient.setQueryData([TICKETS_QUERY_KEY], (old: TicketListDto) => ({
         ...old,
         tickets: [
@@ -21,9 +22,15 @@ export default function useCreateTicket() {
           },
         ],
       }));
+      return { previousTickets } as const;
+    },
+    onError: (_error, _variables, context) => {
+      console.log("⚒️ onError:", context?.previousTickets);
+      queryClient.setQueryData([TICKETS_QUERY_KEY], context?.previousTickets);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["tickets"] });
+      console.log("⚒️ onSettled");
+      queryClient.invalidateQueries({ queryKey: [TICKETS_QUERY_KEY] });
     },
   });
   return mutate;

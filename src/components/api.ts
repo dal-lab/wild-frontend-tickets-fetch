@@ -1,9 +1,10 @@
 import axios from "axios";
 import { Ticket } from "../types";
 
+export const API_BASE_URL = "https://tickets-api.codedemo.co";
+
 const instance = axios.create({
-  // Vercel에 배포된 백엔드 URL로 변경해주세요
-  baseURL: "https://tickets-api.codedemo.co",
+  baseURL: API_BASE_URL,
   timeout: 1_000,
 });
 
@@ -11,9 +12,7 @@ export interface TicketListDto {
   tickets: Ticket[];
 }
 
-export async function fetchTickets(): Promise<{
-  tickets: TicketListDto[];
-}> {
+export async function fetchTickets(): Promise<TicketListDto> {
   const { data } = await instance.get("/tickets");
   console.log("🌏 fetchTicket", data);
   return data;
