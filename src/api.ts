@@ -74,3 +74,16 @@ export async function updateTicket({
   });
   return data;
 }
+
+export async function deleteComment({
+  ticketId,
+  commentId,
+}: {
+  ticketId: string;
+  commentId: string;
+}) {
+  const { data } = await instance.delete(
+    `/tickets/${ticketId}/comments/${commentId}`
+  );
+  return data;
+}

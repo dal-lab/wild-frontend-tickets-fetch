@@ -1,12 +1,11 @@
-import { Comment } from '../types';
+import { Comment } from "../types";
+import CommentItem from "./CommentItem";
 
-export default function CommentList({ comments }: {
-  comments: Comment[];
-}) {
+export default function CommentList({ comments }: { comments: Comment[] }) {
   return (
     <ul>
       {comments.map((comment) => (
-        <li key={comment.id}>{comment.content}</li>
+        <CommentItem key={comment.id} comment={comment} />
       ))}
     </ul>
   );
