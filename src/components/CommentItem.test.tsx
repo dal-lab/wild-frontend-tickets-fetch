@@ -4,6 +4,7 @@ import CommentItem from "./CommentItem";
 import nock from "nock";
 import { API_BASE_URL } from "../api";
 import { Comment } from "../types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 describe("CommentItem", () => {
   const comment = {
@@ -14,7 +15,12 @@ describe("CommentItem", () => {
   let requestTicketCommentId = "";
 
   function renderCommentItem() {
-    render(<CommentItem comment={comment} />);
+    const queryClient = new QueryClient();
+    render(
+      <QueryClientProvider client={queryClient}>
+        <CommentItem comment={comment} />
+      </QueryClientProvider>
+    );
   }
 
   beforeEach(() => {
