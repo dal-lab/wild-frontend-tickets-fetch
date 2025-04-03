@@ -1,0 +1,14 @@
+# Refer for explanation to following link:
+# https://lefthook.dev/configuration/
+
+pre-push:
+  commands:
+    tests:
+      run: npm run test:ci
+# You can uncomment and modify these examples as needed
+# pre-commit:
+#   parallel: true
+#   commands:
+#     linting:
+#       glob: "*.{js,ts,jsx,tsx}"
+#       run: yarn eslint {staged_files}

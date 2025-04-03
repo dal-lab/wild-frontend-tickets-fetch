@@ -4,6 +4,7 @@
   "scripts": {
     "start": "vite --port 8080",
     "test": "vitest --watch --reporter=verbose",
+    "test:ci": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [],
@@ -17,6 +18,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "jsdom": "^26.0.0",
+    "lefthook": "^1.11.6",
     "nock": "^14.0.2",
     "typescript": "^5.8.2",
     "vite": "^6.2.1",
