@@ -53,3 +53,24 @@ export async function createComment({
   });
   return data;
 }
+
+export async function deleteTicket({ ticketId }: { ticketId: string }) {
+  const { data } = await instance.delete(`/tickets/${ticketId}`);
+  return data;
+}
+
+export async function updateTicket({
+  ticketId,
+  title,
+  description,
+}: {
+  ticketId: string;
+  title: string;
+  description: string;
+}) {
+  const { data } = await instance.patch(`/tickets/${ticketId}`, {
+    title,
+    description,
+  });
+  return data;
+}

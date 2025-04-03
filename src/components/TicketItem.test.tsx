@@ -13,6 +13,7 @@ const context = describe;
 
 describe("TicketItem", () => {
   let requestTicketId = "";
+  let requestTicket = {} as Ticket;
   const ticket: Ticket = {
     id: "1",
     title: "TITLE",
@@ -23,16 +24,18 @@ describe("TicketItem", () => {
 
   beforeEach(() => {
     requestTicketId = "";
+    requestTicket = {} as Ticket;
 
     nock(API_BASE_URL)
       .patch(`/tickets/${ticket.id}`)
       .reply(200, (uri, body: any) => {
         const parts = uri.split("/");
         requestTicketId = parts[parts.length - 1];
-        return {
+        requestTicket = {
           ...ticket,
           status: body.status,
         };
+        return requestTicket;
       });
 
     nock(API_BASE_URL)
@@ -47,6 +50,27 @@ describe("TicketItem", () => {
             { id: `temp-comment-${Date.now()}`, content: body.content },
           ],
         };
+      });
+
+    nock(API_BASE_URL)
+      .delete(`/tickets/${ticket.id}`)
+      .reply(200, (uri) => {
+        const parts = uri.split("/");
+        requestTicketId = parts[parts.length - 1];
+        return ticket;
+      });
+
+    nock(API_BASE_URL)
+      .patch(`/tickets/${ticket.id}`)
+      .reply(200, (uri, body: any) => {
+        const parts = uri.split("/");
+        requestTicketId = parts[parts.length - 1];
+        requestTicket = {
+          ...ticket,
+          title: body.title,
+          description: body.description,
+        };
+        return requestTicket;
       });
 
     vi.resetAllMocks();
@@ -80,6 +104,18 @@ describe("TicketItem", () => {
     screen.getByText("COMMENT");
   });
 
+  it("renders delete button", () => {
+    renderTicketItem();
+
+    screen.getByRole("button", { name: /Delete/ });
+  });
+
+  it("renders toggle button", () => {
+    renderTicketItem();
+
+    screen.getByRole("button", { name: /Edit/ });
+  });
+
   context("when user clicks toggle button", () => {
     it("calls API", async () => {
       renderTicketItem();
@@ -101,6 +137,28 @@ describe("TicketItem", () => {
       fireEvent.click(screen.getByRole("button", { name: /Add Comment/ }));
       await waitFor(() => {
         expect(requestTicketId).toBe(ticket.id);
+      });
+    });
+  });
+
+  context("when user clicks delete button", () => {
+    it("calls API", async () => {
+      renderTicketItem();
+      fireEvent.click(screen.getByRole("button", { name: /Delete/ }));
+      await waitFor(() => {
+        expect(requestTicketId).toBe(ticket.id);
+      });
+    });
+  });
+
+  context("when user clicks edit button", () => {
+    it("calls API", async () => {
+      renderTicketItem();
+      fireEvent.click(screen.getByRole("button", { name: /Edit/ }));
+      await waitFor(() => {
+        expect(requestTicketId).toBe(ticket.id);
+        expect(requestTicket.title).toBe(ticket.title);
+        expect(requestTicket.description).toBe(ticket.description);
       });
     });
   });
