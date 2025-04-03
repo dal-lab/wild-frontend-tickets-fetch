@@ -3,13 +3,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 import CommentItem from "./CommentItem";
 import nock from "nock";
 import { API_BASE_URL } from "../api";
+import { Comment } from "../types";
 
 describe("CommentItem", () => {
   const comment = {
     id: "1",
-    ticketId: "1",
+    ticket_id: "1",
     content: "COMMENT",
-  };
+  } as Comment;
   let requestTicketCommentId = "";
 
   function renderCommentItem() {
@@ -19,7 +20,7 @@ describe("CommentItem", () => {
   beforeEach(() => {
     requestTicketCommentId = "";
     nock(API_BASE_URL)
-      .delete(`/tickets/${comment.ticketId}/comments/${comment.id}`)
+      .delete(`/tickets/${comment.ticket_id}/comments/${comment.id}`)
       .reply(200, (uri, _body: any) => {
         const parts = uri.split("/");
         requestTicketCommentId = parts[parts.length - 1];

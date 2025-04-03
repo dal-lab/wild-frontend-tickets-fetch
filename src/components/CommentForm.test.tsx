@@ -14,7 +14,7 @@ describe("CommentForm", () => {
     title: "TITLE",
     description: "DESCRIPTION",
     status: "open",
-    comments: [{ id: "1", ticketId: "1", content: "COMMENT" }],
+    comments: [{ id: "1", ticket_id: "1", content: "COMMENT" }],
   };
 
   beforeEach(() => {

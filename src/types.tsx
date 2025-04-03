@@ -1,6 +1,6 @@
 export interface Comment {
   id: string;
-  ticketId: string;
+  ticket_id: string;
   content: string;
 }
 

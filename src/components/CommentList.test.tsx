@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import { Comment } from "../types";
 import CommentList from "./CommentList";
@@ -11,7 +11,7 @@ describe("CommentList", () => {
   const comments: Comment[] = [
     {
       id: "1",
-      ticketId: "1",
+      ticket_id: "1",
       content: "COMMENT",
     },
   ];

@@ -1,11 +1,11 @@
 import { Comment } from "../types";
 import DeleteButton from "./common/DeleteButton";
-// import useDeleteComment from "../hooks/useDeleteComment";
-import { deleteComment } from "../api";
+import useDeleteComment from "../hooks/useDeleteComment";
 
 export default function CommentItem({ comment }: { comment: Comment }) {
+  const deleteComment = useDeleteComment();
   const handleDeleteComment = (commentId: string) => {
-    deleteComment({ ticketId: comment.ticketId, commentId });
+    deleteComment({ ticketId: comment.ticket_id, commentId });
   };
 
   return (
