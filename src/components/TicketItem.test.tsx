@@ -107,7 +107,7 @@ describe("TicketItem", () => {
   it("renders delete button", () => {
     renderTicketItem();
 
-    screen.getByRole("button", { name: /Delete/ });
+    screen.getByRole("button", { name: /Delete Ticket/ });
   });
 
   it("renders toggle button", () => {
@@ -144,7 +144,8 @@ describe("TicketItem", () => {
   context("when user clicks delete button", () => {
     it("calls API", async () => {
       renderTicketItem();
-      fireEvent.click(screen.getByRole("button", { name: /Delete/ }));
+      fireEvent.click(screen.getByRole("button", { name: /Delete Ticket/ }));
+
       await waitFor(() => {
         expect(requestTicketId).toBe(ticket.id);
       });

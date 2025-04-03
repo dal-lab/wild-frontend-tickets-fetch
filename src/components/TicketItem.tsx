@@ -8,6 +8,8 @@ import useToggleTicketStatus from "../hooks/useToggleTicketStatus";
 import { Ticket } from "../types";
 import useDeleteTicket from "../hooks/useDeleteTicket";
 import useUpdateTicket from "../hooks/useUpdateTicket";
+import DeleteButton from "./common/DeleteButton";
+import EditButton from "./common/EditButton";
 
 function TicketItem({ ticket }: { ticket: Ticket }) {
   const toggleTicketStatus = useToggleTicketStatus();
@@ -40,12 +42,8 @@ function TicketItem({ ticket }: { ticket: Ticket }) {
       <button className="status" onClick={handleClick}>
         {ticket.status === "open" ? "Open" : "Closed"}
       </button>
-      <button className="delete" onClick={handleDelete}>
-        Delete
-      </button>
-      <button className="edit" onClick={handleEdit}>
-        Edit
-      </button>
+      <DeleteButton label="Delete Ticket" onClick={handleDelete} />
+      <EditButton label="Edit Ticket" onClick={handleEdit} />
       <CommentList comments={ticket.comments} />
       <CommentForm ticketId={ticket.id} />
     </li>
