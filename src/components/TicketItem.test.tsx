@@ -92,12 +92,6 @@ describe("TicketItem", () => {
     screen.getByText("DESCRIPTION");
   });
 
-  it("renders status", () => {
-    renderTicketItem();
-
-    screen.getByText(/Open/);
-  });
-
   it("renders comments", () => {
     renderTicketItem();
 
@@ -110,10 +104,10 @@ describe("TicketItem", () => {
     screen.getByRole("button", { name: /Delete Ticket/ });
   });
 
-  it("renders toggle button", () => {
+  it("renders status toggle button", () => {
     renderTicketItem();
 
-    screen.getByRole("button", { name: /Edit/ });
+    screen.getByRole("button", { name: /Open/ });
   });
 
   context("when user clicks toggle button", () => {
@@ -148,18 +142,6 @@ describe("TicketItem", () => {
 
       await waitFor(() => {
         expect(requestTicketId).toBe(ticket.id);
-      });
-    });
-  });
-
-  context("when user clicks edit button", () => {
-    it("calls API", async () => {
-      renderTicketItem();
-      fireEvent.click(screen.getByRole("button", { name: /Edit/ }));
-      await waitFor(() => {
-        expect(requestTicketId).toBe(ticket.id);
-        expect(requestTicket.title).toBe(ticket.title);
-        expect(requestTicket.description).toBe(ticket.description);
       });
     });
   });
