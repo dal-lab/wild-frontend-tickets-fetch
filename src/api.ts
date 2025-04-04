@@ -25,7 +25,6 @@ export async function createTickets({
   description: string;
 }): Promise<Ticket> {
   const { data } = await instance.post("/tickets", { title, description });
-  console.log("🌏 createTicket", data);
   return data;
 }
 

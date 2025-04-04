@@ -13,8 +13,6 @@ export default function useTickets() {
     throw error;
   }
 
-  console.log("⚒️ useTickets:", data?.tickets);
-
   const tickets = data?.tickets || [];
 
   return { tickets };

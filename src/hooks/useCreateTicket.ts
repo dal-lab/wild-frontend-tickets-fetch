@@ -25,11 +25,9 @@ export default function useCreateTicket() {
       return { previousTickets } as const;
     },
     onError: (_error, _variables, context) => {
-      console.log("⚒️ onError:", context?.previousTickets);
       queryClient.setQueryData([TICKETS_QUERY_KEY], context?.previousTickets);
     },
     onSettled: () => {
-      console.log("⚒️ onSettled");
       queryClient.invalidateQueries({ queryKey: [TICKETS_QUERY_KEY] });
     },
   });
