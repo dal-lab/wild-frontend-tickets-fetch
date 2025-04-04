@@ -1,26 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createTickets, TicketListDto } from "../api";
 import { TICKETS_QUERY_KEY } from "../constants";
+import { deleteComment, TicketListDto } from "../api";
 
-export default function useCreateTicket() {
+export default function useDeleteComment() {
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
-    mutationFn: createTickets,
-    onMutate: async ({ title, description }) => {
+    mutationFn: deleteComment,
+    onMutate: async ({ ticketId, commentId }) => {
       await queryClient.cancelQueries({ queryKey: [TICKETS_QUERY_KEY] });
       const previousTickets = queryClient.getQueryData([TICKETS_QUERY_KEY]);
       queryClient.setQueryData([TICKETS_QUERY_KEY], (old: TicketListDto) => ({
         ...old,
-        tickets: [
-          ...(old?.tickets || []),
-          {
-            id: `temp-${Date.now()}`,
-            title,
-            description,
-            status: "open",
-            comments: [],
-          },
-        ],
+        tickets: old?.tickets?.map((ticket) =>
+          ticket.id === ticketId
+            ? {
+                ...ticket,
+                comments: ticket.comments.filter(
+                  (comment) => comment.id !== commentId
+                ),
+              }
+            : ticket
+        ),
       }));
       return { previousTickets } as const;
     },

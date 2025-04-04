@@ -1,15 +1,17 @@
-import TicketList from './TicketList';
-import TicketForm from './TicketForm';
-
-import useTickets from '../hooks/useTickets';
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import TicketForm from "./TicketForm";
+import TicketList from "./TicketList";
 
 export default function Main() {
-  const { tickets } = useTickets();
-
   return (
-    <main>
-      <TicketList tickets={tickets} />
-      <TicketForm />
-    </main>
+    <Suspense fallback={<div>Loading...</div>}>
+      <main>
+        <ErrorBoundary fallback={<div>Error!</div>}>
+          <TicketList />
+          <TicketForm />
+        </ErrorBoundary>
+      </main>
+    </Suspense>
   );
 }

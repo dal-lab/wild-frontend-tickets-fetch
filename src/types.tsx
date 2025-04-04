@@ -1,12 +1,13 @@
 export interface Comment {
-  id: number;
+  id: string;
+  ticket_id: string;
   content: string;
 }
 
 export interface Ticket {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  status: 'open' | 'closed';
+  status: "open" | "closed";
   comments: Comment[];
 }
