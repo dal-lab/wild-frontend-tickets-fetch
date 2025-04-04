@@ -32,8 +32,8 @@ describe("CommentList", () => {
     render(<CommentList comments={comments} />);
   }
 
-  it("renders", () => {
-    describe("renders comments", () => {
+  describe("renders", () => {
+    it("renders comments", () => {
       renderCommentList();
       screen.getByText("COMMENT");
       const ulElement = screen.getByRole("list");
@@ -41,7 +41,7 @@ describe("CommentList", () => {
       expect(liElements.length).toBe(1);
     });
 
-    describe("renders delete button", () => {
+    it("renders delete button", () => {
       renderCommentList();
       screen.getByRole("button", {
         name: /Delete Comment/,
