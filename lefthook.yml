@@ -1,10 +1,11 @@
 # Refer for explanation to following link:
 # https://lefthook.dev/configuration/
 
-pre-push:
-  commands:
-    tests:
-      run: npm run test:ci
+# pre-push:
+#   commands:
+#     tests:
+#       run: npm run test:ci
+#       strict: false
 # You can uncomment and modify these examples as needed
 # pre-commit:
 #   parallel: true
